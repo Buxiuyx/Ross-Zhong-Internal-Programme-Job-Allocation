@@ -357,43 +357,121 @@ def worker_detail_change(detail):
         else:
             break
 
-#def a function adding workers(finished)
-def adding_worker():
-    # Make a loop
+
+#Set a function that could return a string variable of "Worker + number"(finished)
+def return_strvariable(x):
+    strvariable = "Worker"
+    strvariable += str(x)
+    #return the string
+    return(strvariable)
+
+#def a function that could add new keys and values in workers.dict using the form of {"Worker+number": {}}(finished)
+def adding_index_dict(name):
+    #We already have 5 keys and values in worker.dict so we start from 6
+    number = 6
+    #make a loop
     while True:
-        # Enter the worker's first name
+        #If the string + number is already inside the workers.dict, then plus the number by 1 and
+        #make workers + (number+1) until the number is not repeated in the workers.dict
+        if return_strvariable(number) in workers.keys():
+            number += 1
+        #The number is now the biggest in the workers.dict
+        else:
+            #We now set an empty dict, x which is the dict to store worker's details
+            x = {"First name": name, "Last name": "", "Job1": "", "Job1_hours": 0, "Work day per week": 0}
+            #Update the workers.dict with {"Workers + number": {}}
+            y = {return_strvariable(number) : x}
+            workers.update(y)
+            #As one new key is added to the dict, then break the loop.
+            break
+    return return_strvariable(number)
+
+
+#def a function adding workers(finished)
+#def a function adding workers
+def adding_worker():
+    #Make a loop
+    while True:
+        #Show workers that are present
+        for workernum, workerdetial in workers.items():
+            #Try and except for empty dict
+            try:
+                print(workernum, workerdetial["First name"], workerdetial["Last name"])
+            except KeyError:
+                pass
+        #Enter the worker's first name
         new_worker = input("Please enter new worker's First name, or enter no to exit").title().strip()
-        # If the user enter no then the function end
+        #If the user enter no then the function end
         if new_worker != "No" and new_worker != "N":
-            # We have set a 2D dictionary, and we created some empty dictionaries. We use the loop to
-            # find any dictionay that is empty, and set the details for that worker.
+            #we set the length of the dictionary as an variable so we can use it to know how many times we need to
+            #use test if the workers.dict is full
+            len_of_workers_dict = len(workers)
+            #We start at 0 test
+            number_we_tested = 0
+            #There k
             for worker in workers.values():
+                # We have set a 2D dictionary, and we created some empty dictionaries. We use the loop to
+                # find any dictionay that is empty, and set the details for that worker.
                 if len(worker) == 0:
-                    # set the detials and Update the details to the dictionary
-                    add = {"First name": new_worker, "Last name": "", "Job1": "", "Job1_hours": 0,
-                           "Work day per week": 0}
+                    #set the detials and Update the details to the dictionary
+                    add = {"First name": new_worker, "Last name": "", "Job1": "", "Job1_hours": 0, "Work day per week": 0}
                     worker.update(add)
-                    # Enter the last name of the worker
-                    lastname = input("Please enter new worker's last name?").title().strip()
-                    # Update the last name
+                    #Enter the last name of the worker
+                    lastname = input("Please enter new worker's last name").title().strip()
+                    #Update the last name
                     worker["Last name"] = lastname
-                    # Ask the user if he wants to add more details to that worker
-                    change = input(
-                        "Would you like to change the new worker's detail? Enter yes to keep").strip().title()
+                    #Show the user all the workers and the worker they just added
+                    for workernum, workerdetial in workers.items():
+                        # Try and except for empty dict
+                        try:
+                            print(workernum, workerdetial["First name"], workerdetial["Last name"])
+                        except KeyError:
+                            pass
+                    #Ask the user if he wants to add more details to that worker
+                    change = input("Would you like to change the new worker's detail? Enter yes to keep").strip().title()
                     if change == "Yes" or change == "Y":
-                        # Use the function
+                        #Use the function
                         worker_detail_change(worker)
 
-                        # We need break here because we made a 'for' loop. As the function add the details
-                        # to one empty dictionary, it stops so that the other dictionaries are still empty
+                        #We need break here because we made a 'for' loop. As the function add the details
+                        #to one empty dictionary, it stops so that the other dictionaries are still empty
                         break
                     else:
                         break
-                # If the dictionary is not empty then looking for the next dictionary
+                #If the dictionary is not empty then looking for the next dictionary
                 else:
-                    pass
-        # Break the While loop
-        break
+                    # We add the number_we_tested by one because we have experenced 1 test
+                    number_we_tested += 1
+                    #Once the number_we_tested is equal to the length of the worker.dict
+                    if number_we_tested == len_of_workers_dict:
+                        #The function add one more index in the dictionary so we can add more workers
+                        workernum = adding_index_dict(new_worker)
+                        #Enter the last name of the worker
+                        lastname = input("Please enter new worker's last name").title().strip()
+                        # Update the last name
+                        lastnameupdate = {"Last name" : lastname}
+                        workers[workernum].update(lastnameupdate)
+                        #Show the user all the workers and the worker they just added.
+                        for workernum, workerdetial in workers.items():
+                            # Try and except for empty dict
+                            try:
+                                print(workernum, workerdetial["First name"], workerdetial["Last name"])
+                            except KeyError:
+                                pass
+                        # Ask the user if he wants to add more details to that worker
+                        change = input(
+                            "Would you like to change the new worker's detail? Enter yes to keep").strip().title()
+                        if change == "Yes" or change == "Y":
+                            # Use the function to change detail.
+                            worker_detail_change(workers[workernum])
+                        break
+        #Ask the user if they want to keep adding
+        keep = input("Would you like to keep adding workers? Enter yes to continue").strip().title()
+        if keep == "Yes" or keep == "Y":
+            pass
+        else:
+            #Break the while True loop
+            break
 
 #def a function deleting workers(finished)
 def deleting_workers():
