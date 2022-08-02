@@ -256,7 +256,7 @@ def adding_index_dict(name):
         #The number is now the biggest in the workers.dict
         else:
             #We now set an empty dict, x which is the dict to store worker's details
-            x = {"First name": name, "Last name": "", "Job1": "", "Job1_hours": 0, "Work day per week": 0}
+            x = {"First name": name, "Last name": "",}
             #Update the workers.dict with {"Workers + number": {}}
             y = {return_strvariable(number) : x}
             workers.update(y)
@@ -290,7 +290,7 @@ def adding_worker():
                 # find any dictionay that is empty, and set the details for that worker.
                 if len(worker) == 0:
                     #set the detials and Update the details to the dictionary
-                    add = {"First name": new_worker, "Last name": "", "Job1": "", "Job1_hours": 0, "Work day per week": 0}
+                    add = {"First name": new_worker, "Last name": "",}
                     worker.update(add)
                     #Enter the last name of the worker
                     lastname = input("Please enter new worker's last name").title().strip()

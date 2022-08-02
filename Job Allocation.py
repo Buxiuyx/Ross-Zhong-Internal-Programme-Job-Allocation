@@ -378,7 +378,7 @@ def adding_index_dict(name):
         #The number is now the biggest in the workers.dict
         else:
             #We now set an empty dict, x which is the dict to store worker's details
-            x = {"First name": name, "Last name": "", "Job1": "", "Job1_hours": 0, "Work day per week": 0}
+            x = {"First name": name, "Last name": "",}
             #Update the workers.dict with {"Workers + number": {}}
             y = {return_strvariable(number) : x}
             workers.update(y)
@@ -414,7 +414,7 @@ def adding_worker():
                 # find any dictionay that is empty, and set the details for that worker.
                 if len(worker) == 0:
                     #set the detials and Update the details to the dictionary
-                    add = {"First name": new_worker, "Last name": "", "Job1": "", "Job1_hours": 0, "Work day per week": 0}
+                    add = {"First name": new_worker, "Last name": "",}
                     worker.update(add)
                     #Enter the last name of the worker
                     lastname = input("Please enter new worker's last name").title().strip()
@@ -565,9 +565,12 @@ def workers_salary():
                   .format(daily_salary), "Weekly salary: {:.2f}$".format(weekly_salary))
         #If there isn't that detail than just print the daily salary
         else:
-            print(worker, worker_detail["First name"], worker_detail["Last name"], "Daily salary: {:.2f}$"
-                  .format(daily_salary))
-            pass
+            try:
+
+                print(worker, worker_detail["First name"], worker_detail["Last name"], "Daily salary: {:.2f}$"
+                      .format(daily_salary))
+            except KeyError:
+                pass
     #Calculate the total paid after calculate each worker's salary.
     daily_total_paid += daily_salary
     weekly_total_paid += weekly_salary

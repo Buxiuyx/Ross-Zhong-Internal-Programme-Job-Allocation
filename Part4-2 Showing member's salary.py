@@ -88,9 +88,11 @@ def workers_salary():
                   .format(daily_salary), "Weekly salary: {:.2f}$".format(weekly_salary))
         #If there isn't that detail than just print the daily salary
         else:
-            print(worker, worker_detail["First name"], worker_detail["Last name"], "Daily salary: {:.2f}$"
-                  .format(daily_salary))
-            pass
+            try:
+                print(worker, worker_detail["First name"], worker_detail["Last name"], "Daily salary: {:.2f}$"
+                      .format(daily_salary))
+            except KeyError:
+                pass
     #Calculate the total paid after calculate each worker's salary.
     daily_total_paid += daily_salary
     weekly_total_paid += weekly_salary
