@@ -8,14 +8,24 @@ worker2, worker3, worker4, worker5 = {}, {}, {}, {}
 #Set up a dictionary that make the connection between strings and the members' details.
 workers = {'Worker1': worker1, "Worker2": worker2, "Worker3": worker3, "Worker4": worker4, "Worker5": worker5,}
 
+
+#define a function that shows workers which can be used in view_workers, adding_workers and deleting_workers functions
+def showing_worker_list(dict):
+    # Show workers that are present
+    for keys, values in dict.items():
+        # Try and except for empty dict
+        try:
+            print(keys, values["First name"], values["Last name"])
+        except KeyError:
+            pass
+
+
 #Def the function
 def deleting_workers():
     #loop
     while True:
         #Print out all the workers
-        for num, worker in workers.items():
-            if "First name" in worker.keys() and "Last name" in worker.keys():
-                print(num, worker["First name"], worker["Last name"])
+        showing_worker_list(workers)
         #Enter the last name to delete the worker because people may have the same first name.
         deleted_worker = input("Please enter the worker's LAST name to delete, or enter No to exit").strip().title()
         #Looking for any worker who has the same last name as the user entered
@@ -41,6 +51,8 @@ def deleting_workers():
             #Pass if the KeyError because some of the dictionaries don't have anything in it. Skip the empty dictionaries
             except KeyError:
                 pass
+        showing_worker_list(workers)
+        print("You have deleted:", deleted_worker)
         #Ask the user to keep or not
         keep = input("Would you like to keep deleting? Enter Yes to keep").strip().title()
         if keep == "Yes" or keep == "Y":

@@ -15,13 +15,18 @@ worker2, worker3, worker4, worker5 = {}, {}, {}, {}
 #Set up a dictionary that make the connection between strings and the members' details.
 workers = {'Worker1': worker1, "Worker2": worker2, "Worker3": worker3, "Worker4": worker4, "Worker5": worker5,}
 
+#Define a function that shows jobs which can be used in adding_jobs and deleting_jobs functions
+def show_jobs(dict):
+    #Print
+    for keys, values in dict.items():
+        print("{}, ${} per hour".format(keys, values))
+
 
 #Define a function that add jobs and the salary for the job(finished)
 def adding_jobs():
     while True:
         #Print the jobs
-        for job, salary in jobs.items():
-            print("{}, {}$ per hour".format(job, salary))
+        show_jobs(jobs)
         #Ask the user the jobs they want to add
         job_adding = input("Enter the job type you want to add, or enter no to exit").title().strip()
         #to detect if the user wants to exit or keep.
@@ -34,8 +39,7 @@ def adding_jobs():
                     #Update the dictionary to put the new job in to it.
                     jobs.update({job_adding: salary_adding})
                     #Print the jobs in list so the user knows the job is added
-                    for job, salary in jobs.items():
-                        print("{}, {}$ per hour\n".format(job, salary))
+                    show_jobs(jobs)
                     break
                 #If the user's input is a string or not a float, it (the function) asks the user to keep and try it again.
                 except ValueError:
@@ -65,8 +69,7 @@ def deleting_jobs():
     #A loop
     while True:
         #Show jobs
-        for job, salary in jobs.items():
-            print("{}, ${} per hour".format(job, salary))
+        show_jobs(jobs)
         #Ask the user to enter the job they need to delete
         job_deleting = input("What job you wanna delete").title()
         #Check if the job is in the jobs.dict
@@ -74,8 +77,7 @@ def deleting_jobs():
             x = jobs.pop(job_deleting)
             print("The new job list:")
             #Print the new jobs.dict and show the user that the job is deleted
-            for job, salary in jobs.items():
-                print("{}, ${} per hour".format(job, salary))
+            show_jobs(jobs)
             print("Job '{}' has been deleted from the job list".format(job_deleting))
         #If there isn't the job, then print the string.
         else:
@@ -86,6 +88,18 @@ def deleting_jobs():
             pass
         else:
             break
+
+
+#define a function that shows workers which can be used in view_workers, adding_workers and deleting_workers functions
+def showing_worker_list(dict):
+    # Show workers that are present
+    for keys, values in dict.items():
+        # Try and except for empty dict
+        try:
+            print(keys, values["First name"], values["Last name"])
+        except KeyError:
+            pass
+
 
 #Define a function that view the workers details(finished)
 def viewing_workers():
@@ -108,13 +122,8 @@ Enter 1 or 2, or enter exit to return""").strip().lower()
 def workers_detail():
     #A loop
     while True:
-        #Print the member's number, first name and last name
-        for worker, worker_detail in workers.items():
-            if "First name" in worker_detail.keys() and "Last name" in worker_detail.keys():
-                print(worker, worker_detail["First name"], worker_detail["Last name"])
-            #If there is nothing in the dict, it passes so there won't be ValueError or KeyError bugs.
-            else:
-                pass
+        # Show workers that are present
+        showing_worker_list(workers)
         #Ask the user to choose a member to see his detail.
         choose = input("Whose detail you wanna look at? Enter the worker and his number or enter No or N to return.").capitalize().strip()
         #To check if the member is in the dict
@@ -131,6 +140,76 @@ def workers_detail():
         else:
             print("Sorry,", choose, "is not in the members")
 
+#def a function that can be used in worker_detail_change for mutiple times.
+def changing_detial(dict, change):
+    #Enter the changes
+    detail_change = input("Please enter new", change).strip().capitalize()
+    #append the changes to the dict
+    dict[change] = detail_change
+
+#def a function that can be used in worker_detail_change for mutiple times.
+def append_jobs_to_dict(dict, change, a, b):
+    new_time = float(input("Enter the job time"))
+    new_job = {a: change, b: new_time}
+    dict.update(new_job)
+
+#def a function that can be used in worker_detail_change for mutiple times.
+def remove_jobs_from_dict(dict, change):
+    try:
+        del dict[change]
+        print("You have replaced", change)
+    except KeyError:
+        pass
+
+#def a function that can be used in worker_detail_change for mutiple times.
+#The function has two variables which are the worker's detail dictionary and the job which is adding to his detail dict.
+def adding_job_to_worker(dict, job):
+    while True:
+        #If job1 is not there then the job become job1
+        if "Job1" not in dict.keys():
+            # Input the job time and update them to member's detail
+            alpha, beta = "Job1", "Job1_hours"
+            #call the function to append jobs to dict
+            append_jobs_to_dict(dict, job, alpha, beta)
+            break
+        #if job1 is already there and then the job become job2
+        elif "Job2" not in dict.keys():
+            # Input the job time and update them to member's detail
+            alpha, beta = "Job2", "Job2_hours"
+            # call the function to append jobs to dict
+            append_jobs_to_dict(dict, job, alpha, beta)
+            break
+        #if job1 and job2 is already there and then the job become job3
+        elif "Job3" not in dict.keys():
+            # Input the job time and update them to member's detail
+            alpha, beta = "Job3", "Job3_hours"
+            # call the function to append jobs to dict
+            append_jobs_to_dict(dict, job, alpha, beta)
+            break
+        else:
+            # If there are more than Three jobs, Ask the user to delete one job or not
+            job_delete = input(
+                "Each worker can only have maximum of three jobs. Please enter a job1, "
+                "job2 or job3 to delete the current jobs, or enter no "
+                "to stop adding jobs").capitalize().strip()
+            # delete job1
+            if job_delete == "Job1":
+               remove_jobs_from_dict(dict, job_delete)
+            # delte job2
+            elif job_delete == "Job2":
+                remove_jobs_from_dict(dict, job_delete)
+            # delete job3
+            elif job_delete == "Job3":
+                remove_jobs_from_dict(dict, job_delete)
+            #if the user doesn't want to delete any job
+            elif job_delete == "No":
+                #break the loop and tell the user that the adding is unsuccessful
+                print("your job adding is not successful")
+                break
+            #if the user enter none of the option above
+            else:
+                print("that is not an option")
+
 #def a function inside workers_detail for changing details(finished)
 def worker_detail_change(detail):
     #Make a loop
@@ -141,13 +220,11 @@ def worker_detail_change(detail):
         #Change member's first name
         if change == "First name":
             #Ask for the new first name and update it
-            detail_change = input("Please enter new first name").strip().capitalize()
-            detail["First name"] = detail_change
+            changing_detial(detial, change)
         #Change member's last name
         elif change == "Last name":
             #Ask for the new last name and update it
-            detail_change = input("Please enter new last name").strip().capitalize()
-            detail["Last name"] = detail_change
+            changing_detial(detial, change)
         #Change member's jobs
         elif change == "Job":
             #Before changing, showing the user the jobs that the member is doing.
@@ -181,49 +258,15 @@ def worker_detail_change(detail):
                             except ValueError:
                                 print("That's not a number")
                         #Print the new jobs.dict to show the user that the job is added successfully
-                        for job, salary in jobs.items():
-                            print("{}, {} per hour".format(job, salary))
+                        show_jobs(jobs)
+                        print("You have add", detail_change, "to the job list")
                         #Ask the user to add this new job to member's detail
                         add = input("Would you like to add the job to the member's detail?").strip().title()
                         if add =="Yes" or add == "Y":
                             #The whole if/elif/else statement is to check that if the member has more than THREE jobs,
                             #because a person can't do that many jobs.
-                            if "Job1" not in detail.keys():
-                                #Input the job time and update them to member's detail
-                                new_time = float(input("Enter the job time"))
-                                new_job = {"Job1": detail_change, "Job1_hours": new_time}
-                                detail.update(new_job)
-                            elif "Job2" not in detail.keys():
-                                # Input the job time and update them to member's detail
-                                new_time = float(input("Enter the job time"))
-                                new_job = {"Job2": detail_change, "Job2_hours": new_time}
-                                detail.update(new_job)
-                            elif "Job3" not in detail.keys():
-                                # Input the job time and update them to member's detail
-                                new_time = float(input("Enter the job time"))
-                                new_job = {"Job3": detail_change, "Job3_hours": new_time}
-                                detail.update(new_job)
-                            else:
-                                #If there are more than Three jobs, Ask the user to delete one job or not
-                                job_delete = input(
-                                    "Each worker can only have maximum of three jobs. Please enter a job1, "
-                                    "job2 or job3 to delete the current jobs, or enter no "
-                                    "to stop adding jobs").capitalize().strip()
-                                #delete job1
-                                if job_delete == "Job1":
-                                    del detail["Job1"]
-                                    print("You have deleted Job1, please enter new job")
-                                #delte job2
-                                elif job_delete == "Job2":
-                                    del detail["Job2"]
-                                    print("You have deleted Job2, please enter new job")
-                                #delete job3
-                                elif job_delete == "Job3":
-                                    del detail["Job3"]
-                                    print("You have deleted Job3, please enter new job")
-                                #The loop will start again after delete jobs
-                                else:
-                                    break
+                            adding_job_to_worker(detail, detail_change)
+
                                 #Break the loop if the user chose none of above
                         #Ask the users if they want to add mor jobs
                         keep = input("Would you like to keep changing? yes, y to continue").lower().strip()
@@ -235,36 +278,7 @@ def worker_detail_change(detail):
                 #If the job is in the jobs.dict then do the same as the above code does.
                 else:
                     #replace job1
-                    if "Job1" not in detail.keys():
-                        new_time = input("Enter the job time")
-                        new_job = {"Job1": detail_change, "Job1_hours": new_time}
-                        detail.update(new_job)
-                    #replace job2
-                    elif "Job2" not in detail.keys():
-                        new_time = input("Enter the job time")
-                        new_job = {"Job2": detail_change, "Job2_hours": new_time}
-                        detail.update(new_job)
-                    #replace job3
-                    elif "Job3" not in detail.keys():
-                        new_time = input("Enter the job time")
-                        new_job = {"Job3": detail_change, "Job3_hours": new_time}
-                        detail.update(new_job)
-                    #delete one job above if there are three jobs
-                    else:
-                        job_delete = input("Each worker can only have maximum of three jobs. Please enter a job1,"
-                                           "job2 or job3 to delete the current job").capitalize().strip()
-                        #delete job1
-                        if job_delete == "Job1":
-                            del detail["Job1"]
-                            print("You have deleted Job1, please enter new job")
-                        #delete job2
-                        if job_delete == "Job2":
-                            del detail["Job2"]
-                            print("You have deleted Job2, please enter new job")
-                        #delete job3
-                        if job_delete =="Job3":
-                            del detail["Job3"]
-                            print("You have deleted Job3, please enter new job")
+                    adding_job_to_worker(detail, detail_change)
                 #Ask the user to keep or not
                 keep = input("Would you like to keep changing? yes, y to continue").lower().strip()
                 if keep == "yes" or keep == "y":
@@ -272,7 +286,7 @@ def worker_detail_change(detail):
                 else:
                     break
         #Change job time
-        elif change == "Jobhours":
+        elif change == "Job hours":
             #Create a list to store 'jobs' that the worker is doing.
             #So the user can enter the jobs and see if the job is in the list to change the related job times.
             job = []
@@ -393,12 +407,7 @@ def adding_worker():
     #Make a loop
     while True:
         #Show workers that are present
-        for workernum, workerdetial in workers.items():
-            #Try and except for empty dict
-            try:
-                print(workernum, workerdetial["First name"], workerdetial["Last name"])
-            except KeyError:
-                pass
+        showing_worker_list(workers)
         #Enter the worker's first name
         new_worker = input("Please enter new worker's First name, or enter no to exit").title().strip()
         #If the user enter no then the function end
@@ -478,9 +487,7 @@ def deleting_workers():
     #loop
     while True:
         #Print out all the workers
-        for num, worker in workers.items():
-            if "First name" in worker.keys() and "Last name" in worker.keys():
-                print(num, worker["First name"], worker["Last name"])
+        showing_worker_list(workers)
         #Enter the last name to delete the worker because people may have the same first name.
         deleted_worker = input("Please enter the worker's LAST name to delete, or enter No to exit").strip().title()
         #Looking for any worker who has the same last name as the user entered
@@ -506,6 +513,8 @@ def deleting_workers():
             #Pass if the KeyError because some of the dictionaries don't have anything in it. Skip the empty dictionaries
             except KeyError:
                 pass
+        showing_worker_list(workers)
+        print("You have deleted:", deleted_worker)
         #Ask the user to keep or not
         keep = input("Would you like to keep deleting? Enter Yes to keep").strip().title()
         if keep == "Yes" or keep == "Y":
@@ -519,13 +528,13 @@ def workers_salary():
     #Set number variables
     daily_total_paid = 0.00
     weekly_total_paid = 0.00
-    weekly_salary = 0.00
-    daily_salary = 0.00
-    job1_daily_salary = 0.00
-    job2_daily_salary = 0.00
-    job3_daily_salary = 0.00
     #Pick up every worker's detail
     for worker, worker_detail in workers.items():
+        weekly_salary = 0.00
+        daily_salary = 0.00
+        job1_daily_salary = 0.00
+        job2_daily_salary = 0.00
+        job3_daily_salary = 0.00
         #If they have job1 then take the salary from job1, and set a variable for job1's salary
         if "Job1" in worker_detail:
             #take out job1
@@ -566,14 +575,14 @@ def workers_salary():
         #If there isn't that detail than just print the daily salary
         else:
             try:
-
                 print(worker, worker_detail["First name"], worker_detail["Last name"], "Daily salary: {:.2f}$"
                       .format(daily_salary))
             except KeyError:
                 pass
-    #Calculate the total paid after calculate each worker's salary.
-    daily_total_paid += daily_salary
-    weekly_total_paid += weekly_salary
+        #Calculate the total paid after calculate each worker's salary.
+        daily_total_paid += daily_salary
+        weekly_total_paid += weekly_salary
+
     #Print out the total paid
     print("Daily total paid is {:.2f}$\nWeekly total paid is {:.2f}$".format(daily_total_paid, weekly_total_paid))
 

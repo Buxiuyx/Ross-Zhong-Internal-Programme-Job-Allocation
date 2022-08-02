@@ -8,14 +8,18 @@ worker2, worker3, worker4, worker5 = {}, {}, {}, {}
 #Set up a dictionary that make the connection between strings and the members' details.
 workers = {'Worker1': worker1, "Worker2": worker2, "Worker3": worker3, "Worker4": worker4, "Worker5": worker5,}
 
+#Define a function that shows jobs which can be used in adding_jobs and deleting_jobs functions
+def show_jobs(dict):
+    #Print
+    for keys, values in dict.items():
+        print("{}, ${} per hour".format(keys, values))
 
-#Define a function to delete jobs in the dict.
+#Define a function that delete jobs(finished)
 def deleting_jobs():
     #A loop
     while True:
         #Show jobs
-        for job, salary in jobs.items():
-            print("{}, ${} per hour".format(job, salary))
+        show_jobs(jobs)
         #Ask the user to enter the job they need to delete
         job_deleting = input("What job you wanna delete").title()
         #Check if the job is in the jobs.dict
@@ -23,8 +27,7 @@ def deleting_jobs():
             x = jobs.pop(job_deleting)
             print("The new job list:")
             #Print the new jobs.dict and show the user that the job is deleted
-            for job, salary in jobs.items():
-                print("{}, ${} per hour".format(job, salary))
+            show_jobs(jobs)
             print("Job '{}' has been deleted from the job list".format(job_deleting))
         #If there isn't the job, then print the string.
         else:

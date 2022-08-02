@@ -8,13 +8,17 @@ worker2, worker3, worker4, worker5 = {}, {}, {}, {}
 #Set up a dictionary that make the connection between strings and the members' details.
 workers = {'Worker1': worker1, "Worker2": worker2, "Worker3": worker3, "Worker4": worker4, "Worker5": worker5,}
 
+#Define a function that shows jobs which can be used in adding_jobs and deleting_jobs functions
+def show_jobs(dict):
+    #Print
+    for keys, values in dict.items():
+        print("{}, ${} per hour".format(keys, values))
 
-#define the function
+#Define a function that add jobs and the salary for the job(finished)
 def adding_jobs():
     while True:
         #Print the jobs
-        for job, salary in jobs.items():
-            print("{}, {}$ per hour".format(job, salary))
+        show_jobs(jobs)
         #Ask the user the jobs they want to add
         job_adding = input("Enter the job type you want to add, or enter no to exit").title().strip()
         #to detect if the user wants to exit or keep.
@@ -27,8 +31,7 @@ def adding_jobs():
                     #Update the dictionary to put the new job in to it.
                     jobs.update({job_adding: salary_adding})
                     #Print the jobs in list so the user knows the job is added
-                    for job, salary in jobs.items():
-                        print("{}, {}$ per hour\n".format(job, salary))
+                    show_jobs(jobs)
                     break
                 #If the user's input is a string or not a float, it (the function) asks the user to keep and try it again.
                 except ValueError:
